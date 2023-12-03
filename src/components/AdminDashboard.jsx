@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faRightLongToLine, faEdit, faTrash, faAngleDoubleLeft, faAngleLeft, faAngleRight, faAngleDoubleRight, faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -31,7 +33,7 @@ const AdminDashboard = () => {
     const pageNumber = parseInt(jumpPage, 10);
     if (!isNaN(pageNumber)) {
       handleSetPage(pageNumber);
-      setJumpPage(''); 
+      setJumpPage('');
     }
   };
   const handleCheckboxChange = (id) => {
@@ -67,7 +69,7 @@ const AdminDashboard = () => {
     setSelectedRows(selectedRows.filter(rowId => rowId !== id));
   };
 
-  
+
 
   const handleEdit = (user) => {
     setEditingUser(user);
@@ -95,26 +97,45 @@ const AdminDashboard = () => {
   };
   const isAllOnPageSelected = paginatedUsers.length > 0 && paginatedUsers.every(user => selectedRows.includes(user.id));
 
-
+  const IconButtonWithTooltip = ({ onClick, icon, text }) => (
+    <div className="tooltip-container">
+      <button
+        className="p-2 m-2 shadow-lg rounded"
+        onClick={onClick}
+      >
+        <FontAwesomeIcon icon={icon} />
+      </button>
+      <div className="tooltip">{text}</div>
+    </div>
+  );
 
   return (
-    <div className=" border-4  text-xs sm:text-sm md:text-lg md:px-4 md:py-2 py-1 bg-gray-100">
-      <div className="mb-4 bg-white md:px-4 md:py-2 py-1 rounded shadow">
+    <div className="  text-xs sm:text-sm md:text-lg md:px-4  bg-gray-100">
+      <div className="mb-2 bg-white md:px-4 md:py-2 py-1 rounded shadow">
         <input
           type="text"
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="md:md:p-2 border border-gray-300 rounded w-1/2 md:w-1/2 lg:w-1/3"
+          className="md:p-2 border border-gray-300 rounded w-1/2 md:w-1/2 lg:w-1/3"
         />
       </div>
-      <div className='my-4'>
-        <button
-          className={` p-2 rounded ${isAllOnPageSelected ? 'bg-red-500 text-white transition-all duration-300 hover:bg-red-600 hover:text-white' : 'bg-blue-500 transition-all duration-300 hover:bg-blue-600 hover:text-white text-white'}`}
-          onClick={handleSelectAll}
-        >
-          {isAllOnPageSelected ? 'Deselect All' : 'Select All'}
-        </button>
+      <div className='my-2  flex justify-center'>
+        <div className='border-2 text-center bg-white rounded-sm   shadow-lg'>
+
+          <button
+            className={`p-2 m-2 transition-all duration-300 hover:scale-105 shadow-lg rounded ${isAllOnPageSelected ? 'bg-red-500 text-white transition-all duration-300 hover:bg-red-600 hover:text-white' : 'bg-blue-500 transition-all duration-300 hover:bg-blue-600 hover:text-white text-white'}`}
+            onClick={handleSelectAll}
+          >
+            {isAllOnPageSelected ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faCheck} />}
+          </button>
+          <button
+            className=" p-2 m-2 hover:scale-105 shadow-lg font-bold text-lg bg-red-500 text-white md:text-xl rounded transition-all duration-300 hover:bg-red-600"
+            onClick={handleDeleteSelected}
+          >
+            <FontAwesomeIcon icon={faTrashAlt} />
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -186,10 +207,10 @@ const AdminDashboard = () => {
                     </>
                   ) : (
                     <>
-                      <button className="edit mr-2 px-2 py-1 my-2 md:my-0 bg-blue-500 text-white rounded transition-all duration-300 hover:bg-blue-600 hover:text-white" onClick={() => handleEdit(user)}>
-                        Edit
+                      <button className="edit mr-2 px-2 py-1 my-2 md:my-0 bg-blue-500 text-white rounded transition-all duration-300 hover:bg-blue-600 hover:text-white hover:scale-105" onClick={() => handleEdit(user)}>
+                        <FontAwesomeIcon icon={faEdit} />
                       </button>
-                      <button className="delete px-2 py-1 bg-red-500 text-white rounded transition-all duration-300 hover:bg-red-600 hover:text-white" onClick={() => handleDelete(user.id)}>Delete</button>
+                      <button className="delete px-2 py-1 bg-red-500 hover:scale-105 text-white rounded transition-all duration-300 hover:bg-red-600 hover:text-white" onClick={() => handleDelete(user.id)}> <FontAwesomeIcon icon={faTrash} /></button>
                     </>
                   )}
                 </td>
@@ -199,28 +220,25 @@ const AdminDashboard = () => {
         </table>
       </div>
 
-      <button
-        className="absolute top-1 right-4 md:p-2 md:mr-2 text-red-600 font-bold text-lg md:text-2xl rounded"
-        onClick={handleDeleteSelected}
-      >
-        <FontAwesomeIcon icon={faTrashAlt} />
-      </button>
 
-      <div className="mt-4 flex flex-col md:flex-row items-center justify-center  ">
-        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white first-page w-32 mt-2 md:mt-0 md:mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(1)}>First Page</button>
-        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white previous-page w-32 mt-2 md:mt-0 md:mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(currentPage - 1)} disabled={currentPage === 1}>Previous Page</button>
-        <span className="mt-2 md:mt-0 md:mr-2">
+
+      <div className="mt-4 flex items-center justify-center  ">
+        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white first-page   mt-2 md:mt-0 md:mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(1)} ><FontAwesomeIcon icon={faAngleDoubleLeft} /></button>
+        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white previous-page   mt-2 md:mt-0 md:mr-2 md:p-2 bg-blue-500 text-white rounded " onClick={() => handleSetPage(currentPage - 1)} disabled={currentPage === 1}><FontAwesomeIcon icon={faAngleLeft} /></button>
+        <span className="mt-2  md:mt-0 md:mr-2">
           <input
             type="text"
             value={jumpPage}
             placeholder={currentPage}
             onChange={handleJumpPageChange}
-            className="md:p-2 border rounded  w-16"
+            className="md:p-2 text-center border rounded  w-16"
           />
         </span>
-        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white jump-page mt-2 w-32 md:mt-0 mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={handleJumpToPage}>Jump</button>
-        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white next-page mt-2 w-32 md:mt-0 mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(currentPage + 1)} disabled={currentPage === Math.ceil(filteredUsers.length / pageSize)}>Next Page</button>
-        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white last-page mt-2 w-32 md:mt-0 mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(Math.ceil(filteredUsers.length / pageSize))}>Last Page</button>
+        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white jump-page mt-2   md:mt-0 mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={handleJumpToPage}> <FontAwesomeIcon icon={faLocationArrow} /> </button>
+        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white next-page mt-2   md:mt-0 mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(currentPage + 1)} disabled={currentPage === Math.ceil(filteredUsers.length / pageSize)}>  <FontAwesomeIcon icon={faAngleRight} />
+        </button>
+        <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white last-page mt-2   md:mt-0 mr-2 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(Math.ceil(filteredUsers.length / pageSize))}>  <FontAwesomeIcon icon={faAngleDoubleRight} />
+        </button>
       </div>
     </div>
   );
