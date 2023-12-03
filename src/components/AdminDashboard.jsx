@@ -117,7 +117,7 @@ const AdminDashboard = () => {
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="md:p-2 border border-gray-300 rounded w-1/2 md:w-1/2 lg:w-1/3"
+          className="p-1 md:p-2  border border-gray-300 rounded w-1/2 md:w-1/2 lg:w-1/3"
         />
       </div>
       <div className='my-2  flex justify-center'>
