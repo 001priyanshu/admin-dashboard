@@ -130,7 +130,7 @@ const AdminDashboard = () => {
             {isAllOnPageSelected ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faCheck} />}
           </button>
           <button
-            className=" p-2 m-2 hover:scale-105 shadow-lg font-bold text-lg bg-red-500 text-white md:text-xl rounded transition-all duration-300 hover:bg-red-600"
+            className=" p-2 m-2 hover:scale-105 shadow-lg font-bold  bg-red-500 text-white  md:text-xl rounded transition-all duration-300 hover:bg-red-600"
             onClick={handleDeleteSelected}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
