@@ -211,7 +211,7 @@ const AdminDashboard = () => {
       </div>
 
 
-      <div className="mt-4 flex gap-2 items-center justify-center  ">
+      <div className="mt-2 flex gap-2 items-center justify-center  ">
         <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white first-page   mt-2 md:mt-0 p-1 md:p-2 bg-blue-500 text-white rounded" onClick={() => handleSetPage(1)} ><FontAwesomeIcon icon={faAngleDoubleLeft} /></button>
         <button className="transition-all duration-300 hover:bg-blue-600 hover:text-white previous-page   mt-2 md:mt-0 p-1  md:p-2 bg-blue-500 text-white rounded " onClick={() => handleSetPage(currentPage - 1)} disabled={currentPage === 1}><FontAwesomeIcon icon={faAngleLeft} /></button>
         <span className="mt-2  md:mt-0 md:mr-2">
